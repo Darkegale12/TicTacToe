@@ -24,6 +24,7 @@ h1 {
     grid-template-rows: repeat(3, 120px);
     gap: 10px;
     margin: 20px auto;
+    display: none;
 }
 
 .cell {
@@ -71,4 +72,8 @@ button:hover {
 
 .circle {
     color: #5c85ff;
+}
+
+.hidden {
+    display: none;
 }
