@@ -13,17 +13,17 @@ const winningCombinations = [
     [2, 4, 6]
 ];
 
-let isCircleTurn;
+let isCircleTurn = false; // X starts the game
 
 startButton.addEventListener('click', startGame);
 
 function startGame() {
-    isCircleTurn = false;
+    isCircleTurn = false; // Reset to ensure X always starts
     cells.forEach(cell => {
         cell.classList.remove('x');
         cell.classList.remove('circle');
         cell.removeEventListener('click', handleClick);
-        cell.addEventListener('click', handleClick, { once: true });
+        cell.addEventListener('click', handleClick, { once: true }); // Make sure cell can only be clicked once
     });
     setBoardHoverClass();
     board.classList.remove('hidden'); // Show the board
@@ -33,7 +33,7 @@ function startGame() {
 
 function handleClick(e) {
     const cell = e.target;
-    const currentClass = isCircleTurn ? 'circle' : 'x';
+    const currentClass = isCircleTurn ? 'circle' : 'x'; // 'X' if isCircleTurn is false, 'O' if true
     placeMark(cell, currentClass);
 
     if (checkWin(currentClass)) {
@@ -51,16 +51,16 @@ function placeMark(cell, currentClass) {
 }
 
 function swapTurns() {
-    isCircleTurn = !isCircleTurn;
+    isCircleTurn = !isCircleTurn; // Swap between X and O
 }
 
 function setBoardHoverClass() {
     board.classList.remove('x');
     board.classList.remove('circle');
     if (isCircleTurn) {
-        board.classList.add('circle');
+        board.classList.add('circle'); // Set O's hover effect
     } else {
-        board.classList.add('x');
+        board.classList.add('x'); // Set X's hover effect
     }
 }
 
