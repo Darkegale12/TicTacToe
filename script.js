@@ -13,13 +13,13 @@ const winningCombinations = [
     [2, 4, 6]
 ];
 
-let isCircleTurn = false; // X starts the game
+let isCircleTurn = true; // O starts the game
 
 // Start the game when the button is clicked
 startButton.addEventListener('click', startGame);
 
 function startGame() {
-    isCircleTurn = false; // X always starts
+    isCircleTurn = true; // O always starts
     cells.forEach(cell => {
         cell.classList.remove('x');
         cell.classList.remove('circle');
@@ -35,7 +35,7 @@ function startGame() {
 // Handle a click event on a cell
 function handleClick(e) {
     const cell = e.target;
-    const currentClass = isCircleTurn ? 'circle' : 'x'; // Use 'x' or 'circle'
+    const currentClass = isCircleTurn ? 'circle' : 'x'; // Start with 'O' (circle)
     placeMark(cell, currentClass);
 
     if (checkWin(currentClass)) {
@@ -53,12 +53,12 @@ function placeMark(cell, currentClass) {
     cell.classList.add(currentClass);
 }
 
-// Swap turns between X and O
+// Swap turns between O and X
 function swapTurns() {
     isCircleTurn = !isCircleTurn; // Alternate turns
 }
 
-// Set hover effect to show whose turn it is (X or O)
+// Set hover effect to show whose turn it is (O or X)
 function setBoardHoverClass() {
     board.classList.remove('x');
     board.classList.remove('circle');
@@ -96,7 +96,7 @@ function endGame(draw) {
     }
 }
 
-// Ask if the player wants to play again after win
+// Ask if the player wants to play again after a win
 function askForPlayAgain() {
     setTimeout(() => {
         if (confirm("Do you want to play again?")) {
