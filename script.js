@@ -13,14 +13,13 @@ const winningCombinations = [
     [2, 4, 6]
 ];
 
-let isCircleTurn;
-let gameActive = false; // To ensure the game starts only when clicked
+let isCircleTurn = false; // X starts the game
 
+// Start the game when the button is clicked
 startButton.addEventListener('click', startGame);
 
 function startGame() {
-    isCircleTurn = false; // X starts the game
-    gameActive = true; // Enable the game
+    isCircleTurn = false; // X always starts
     cells.forEach(cell => {
         cell.classList.remove('x');
         cell.classList.remove('circle');
@@ -29,15 +28,14 @@ function startGame() {
     });
     setBoardHoverClass();
     board.classList.remove('hidden'); // Show the board
-    board.style.display = 'grid'; // Ensure board is visible
-    winningMessageTextElement.textContent = ''; // Clear previous game message
-    startButton.style.display = 'none'; // Hide the start button during the game
+    winningMessageTextElement.textContent = ''; // Clear the win message
+    startButton.style.display = 'none'; // Hide the start button
 }
 
+// Handle a click event on a cell
 function handleClick(e) {
-    if (!gameActive) return; // Ensure clicks only work when the game is active
     const cell = e.target;
-    const currentClass = isCircleTurn ? 'circle' : 'x'; // X or O turn
+    const currentClass = isCircleTurn ? 'circle' : 'x'; // Use 'x' or 'circle'
     placeMark(cell, currentClass);
 
     if (checkWin(currentClass)) {
@@ -50,24 +48,28 @@ function handleClick(e) {
     }
 }
 
+// Place an 'X' or 'O' in the clicked cell
 function placeMark(cell, currentClass) {
     cell.classList.add(currentClass);
 }
 
+// Swap turns between X and O
 function swapTurns() {
-    isCircleTurn = !isCircleTurn;
+    isCircleTurn = !isCircleTurn; // Alternate turns
 }
 
+// Set hover effect to show whose turn it is (X or O)
 function setBoardHoverClass() {
     board.classList.remove('x');
     board.classList.remove('circle');
     if (isCircleTurn) {
-        board.classList.add('circle'); // Set O's hover effect
+        board.classList.add('circle'); // O's turn
     } else {
-        board.classList.add('x'); // Set X's hover effect
+        board.classList.add('x'); // X's turn
     }
 }
 
+// Check for a win
 function checkWin(currentClass) {
     return winningCombinations.some(combination => {
         return combination.every(index => {
@@ -76,14 +78,15 @@ function checkWin(currentClass) {
     });
 }
 
+// Check for a draw (if all cells are filled)
 function isDraw() {
     return [...cells].every(cell => {
         return cell.classList.contains('x') || cell.classList.contains('circle');
     });
 }
 
+// End the game (either win or draw)
 function endGame(draw) {
-    gameActive = false; // Stop game from continuing
     if (draw) {
         winningMessageTextElement.textContent = "It's a Draw! Restarting...";
         setTimeout(startGame, 2000); // Automatically restart after 2 seconds
@@ -93,13 +96,14 @@ function endGame(draw) {
     }
 }
 
+// Ask if the player wants to play again after win
 function askForPlayAgain() {
     setTimeout(() => {
         if (confirm("Do you want to play again?")) {
             startGame();
         } else {
             winningMessageTextElement.textContent = "Game Over!";
-            startButton.style.display = 'block'; // Show start button again if game ends
+            startButton.style.display = 'block'; // Show start button again
         }
     }, 500);
 }
