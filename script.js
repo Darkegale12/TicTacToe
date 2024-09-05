@@ -1,7 +1,7 @@
 const cells = document.querySelectorAll('[data-cell]');
 const board = document.getElementById('board');
 const winningMessageTextElement = document.getElementById('winningMessage');
-const restartButton = document.getElementById('restartButton');
+const startButton = document.getElementById('startButton');
 const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -15,6 +15,8 @@ const winningCombinations = [
 
 let isCircleTurn;
 
+startButton.addEventListener('click', startGame);
+
 function startGame() {
     isCircleTurn = false;
     cells.forEach(cell => {
@@ -24,7 +26,9 @@ function startGame() {
         cell.addEventListener('click', handleClick, { once: true });
     });
     setBoardHoverClass();
-    winningMessageTextElement.textContent = "";
+    board.style.display = 'grid';
+    winningMessageTextElement.textContent = '';
+    startButton.style.display = 'none';
 }
 
 function handleClick(e) {
@@ -76,12 +80,22 @@ function isDraw() {
 
 function endGame(draw) {
     if (draw) {
-        winningMessageTextElement.textContent = "It's a Draw!";
+        winningMessageTextElement.textContent = "It's a Draw! Restarting...";
+        setTimeout(startGame, 2000); // Automatically restart after 2 seconds
     } else {
         winningMessageTextElement.textContent = `${isCircleTurn ? "O's" : "X's"} Win!`;
+        askForPlayAgain();
     }
 }
 
-restartButton.addEventListener('click', startGame);
+function askForPlayAgain() {
+    setTimeout(() => {
+        if (confirm("Do you want to play again?")) {
+            startGame();
+        } else {
+            winningMessageTextElement.textContent = "Game Over!";
+            startButton.style.display = 'block';
+        }
+    }, 500);
+}
 
-startGame();
