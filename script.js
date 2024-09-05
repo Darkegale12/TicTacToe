@@ -13,27 +13,31 @@ const winningCombinations = [
     [2, 4, 6]
 ];
 
-let isCircleTurn = false; // X starts the game
+let isCircleTurn;
+let gameActive = false; // To ensure the game starts only when clicked
 
 startButton.addEventListener('click', startGame);
 
 function startGame() {
-    isCircleTurn = false; // Reset to ensure X always starts
+    isCircleTurn = false; // X starts the game
+    gameActive = true; // Enable the game
     cells.forEach(cell => {
         cell.classList.remove('x');
         cell.classList.remove('circle');
         cell.removeEventListener('click', handleClick);
-        cell.addEventListener('click', handleClick, { once: true }); // Make sure cell can only be clicked once
+        cell.addEventListener('click', handleClick, { once: true });
     });
     setBoardHoverClass();
     board.classList.remove('hidden'); // Show the board
-    winningMessageTextElement.textContent = '';
-    startButton.style.display = 'none';
+    board.style.display = 'grid'; // Ensure board is visible
+    winningMessageTextElement.textContent = ''; // Clear previous game message
+    startButton.style.display = 'none'; // Hide the start button during the game
 }
 
 function handleClick(e) {
+    if (!gameActive) return; // Ensure clicks only work when the game is active
     const cell = e.target;
-    const currentClass = isCircleTurn ? 'circle' : 'x'; // 'X' if isCircleTurn is false, 'O' if true
+    const currentClass = isCircleTurn ? 'circle' : 'x'; // X or O turn
     placeMark(cell, currentClass);
 
     if (checkWin(currentClass)) {
@@ -51,7 +55,7 @@ function placeMark(cell, currentClass) {
 }
 
 function swapTurns() {
-    isCircleTurn = !isCircleTurn; // Swap between X and O
+    isCircleTurn = !isCircleTurn;
 }
 
 function setBoardHoverClass() {
@@ -79,6 +83,7 @@ function isDraw() {
 }
 
 function endGame(draw) {
+    gameActive = false; // Stop game from continuing
     if (draw) {
         winningMessageTextElement.textContent = "It's a Draw! Restarting...";
         setTimeout(startGame, 2000); // Automatically restart after 2 seconds
@@ -94,8 +99,7 @@ function askForPlayAgain() {
             startGame();
         } else {
             winningMessageTextElement.textContent = "Game Over!";
-            startButton.style.display = 'block';
+            startButton.style.display = 'block'; // Show start button again if game ends
         }
     }, 500);
 }
-
