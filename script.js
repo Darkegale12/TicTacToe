@@ -26,7 +26,7 @@ function startGame() {
         cell.addEventListener('click', handleClick, { once: true });
     });
     setBoardHoverClass();
-    board.style.display = 'grid';
+    board.classList.remove('hidden'); // Show the board
     winningMessageTextElement.textContent = '';
     startButton.style.display = 'none';
 }
