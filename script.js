@@ -23,6 +23,7 @@ function startGame() {
     cells.forEach(cell => {
         cell.classList.remove('x');
         cell.classList.remove('circle');
+        cell.textContent = ''; // Clear the content of each cell (Added)
         cell.removeEventListener('click', handleClick);
         cell.addEventListener('click', handleClick, { once: true });
     });
@@ -51,6 +52,7 @@ function handleClick(e) {
 // Place an 'X' or 'O' in the clicked cell
 function placeMark(cell, currentClass) {
     cell.classList.add(currentClass);
+    cell.textContent = currentClass === 'circle' ? 'O' : 'X'; // Add 'O' or 'X' to the cell's content (Added)
 }
 
 // Swap turns between O and X
